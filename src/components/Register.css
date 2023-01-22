@@ -9,6 +9,13 @@
   align-items: center;
   height: 70vh;
 }
+.inProgressCircle{
+  /* color: #00845c;
+  display: flex;
+  justify-content: center;
+  align-items: center; */
+  transform: translate(-15px, 5px);
+}
 
 .form {
   background-color: white;
@@ -56,5 +63,8 @@
 @media screen and (min-width: 768px) {
   .form {
     min-width: 24rem;
+  }
+  .content{
+    justify-content: flex-end;
   }
 }

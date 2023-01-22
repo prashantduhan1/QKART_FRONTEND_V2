@@ -1,9 +1,11 @@
+import { FamilyRestroomRounded } from "@mui/icons-material";
+import { SettingsInputAntennaTwoTone } from "@mui/icons-material";
 import { Button, CircularProgress, Stack, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useState } from "react";
-import { config } from "../App";
+import App, { config } from "../App";
 import Footer from "./Footer";
 import Header from "./Header";
 import "./Register.css";
@@ -11,6 +13,21 @@ import "./Register.css";
 const Register = () => {
   const { enqueueSnackbar } = useSnackbar();
 
+   const[username,setUsername]=useState("");
+   const[password,setPassword]=useState("");
+   const[password2,setPassword2]=useState("");
+   const[errorMessage,setErrorMessage]=useState("");
+   const[apiCall,setApiCall]=useState(false);
+
+   const handleUsernameChange=(e)=>{
+    setUsername(e.target.value);
+   }
+   const handlePassword=(e)=>{
+    setPassword(e.target.value);
+   }
+   const handlePassword2=(e)=>{
+    setPassword2(e.target.value);
+   }
 
   // TODO: CRIO_TASK_MODULE_REGISTER - Implement the register function
   /**
@@ -36,6 +53,19 @@ const Register = () => {
    * }
    */
   const register = async (formData) => {
+    formData.preventDefault();
+    const data={"username":username,"password":password}
+    const url=config.endpoint+"/auth/register";  
+    
+    try{await axios.post(url, data)
+    .then(response =>{ console.log("Posting data",response); setApiCall(false); enqueueSnackbar("Registered Successfully"); })
+    .catch(err => { console.log(err.response.data.message);  setApiCall(false); enqueueSnackbar(err.response.data.message);  
+    });
+  }catch(e)
+  {
+    enqueueSnackbar("Something went wrong, check that backend is running and returing a valid json response")
+  }
+    
   };
 
   // TODO: CRIO_TASK_MODULE_REGISTER - Implement user input validation logic
@@ -56,8 +86,40 @@ const Register = () => {
    * -    Check that password field is not less than 6 characters in length - "Password must be at least 6 characters"
    * -    Check that confirmPassword field has the same value as password field - Passwords do not match
    */
-  const validateInput = (data) => {
+  const validateInput = (data) => { 
+    if(username==='')
+    { setErrorMessage("Username is a required field")
+      enqueueSnackbar("Username is a required field")
+      return false
+    }
+    if(username.length<6)
+    { 
+      setErrorMessage("Username must be at least 6 characters");
+      enqueueSnackbar("Username must be at least 6 characters");
+    
+      return false;
+    }
+    if(password.length===0)
+    {
+      setErrorMessage("Password is a required field");
+      enqueueSnackbar("Password is a required field")
+      return false;
+    }
+    if(password.length<6 || password.length===0)
+    {
+      setErrorMessage("Password must be at least 6 characters");
+      enqueueSnackbar("Password must be at least 6 characters")
+      return false;
+    }
+    if(password!==password2)
+    {  console.log(password,password2)
+       setErrorMessage("Passwords do not match")
+      enqueueSnackbar("Passwords do not match")
+      return false;
+    }
+    return true;
   };
+
 
   return (
     <Box
@@ -78,6 +140,7 @@ const Register = () => {
             name="username"
             placeholder="Enter Username"
             fullWidth
+            onChange={handleUsernameChange}
           />
           <TextField
             id="password"
@@ -88,6 +151,7 @@ const Register = () => {
             helperText="Password must be atleast 6 characters length"
             fullWidth
             placeholder="Enter a password with minimum 6 characters"
+            onChange={handlePassword}
           />
           <TextField
             id="confirmPassword"
@@ -96,10 +160,13 @@ const Register = () => {
             name="confirmPassword"
             type="password"
             fullWidth
+            onChange={handlePassword2}
           />
-           <Button className="button" variant="contained">
+       { apiCall===false? <Button className="button" variant="contained" onClick={(e)=>{ 
+           if(validateInput({"username":username, "password":password,"password2":password2})) setApiCall(true); register(e)}} >
             Register Now
-           </Button>
+           </Button>:<CircularProgress className="inProgressCircle"></CircularProgress> 
+       }  
           <p className="secondary-action">
             Already have an account?{" "}
              <a className="link" href="#">
