@@ -15,6 +15,9 @@
 .header-title {
     cursor: pointer;
 }
+.button {
+    background-color: #00a278 !important;
+}
 
 .explore-button {
     color: #00a278 !important;
