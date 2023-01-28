@@ -1,16 +1,17 @@
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { Avatar, Button, Stack } from "@mui/material"; // eslint-disable-next-line no-use-before-define
+import { Avatar, Button, Stack, InputAdornment, 
+  TextField, } from "@mui/material"; // eslint-disable-next-line no-use-before-define
 import Box from "@mui/material/Box";
 import React from "react";
 import { Link } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 import { useHistory } from "react-router-dom";
+import { Search, SentimentDissatisfied } from "@mui/icons-material";
 
 
 import "./Header.css";
 
 const Header = ({ children, hasHiddenAuthButtons }) => {
-  // const navigate=useNavigate();
   const hist = useHistory();
 
    const logout=()=>{
@@ -22,9 +23,11 @@ const Header = ({ children, hasHiddenAuthButtons }) => {
         <Box className="header-title">
             <img src="logo_dark.svg" alt="QKart-icon"></img>
         </Box>
-       
+        { (children) && 
+          <div>{children}</div>
+       }
         {
-          (children==="Products")?
+          (children)?
 
           ((localStorage.username)?
           <div>

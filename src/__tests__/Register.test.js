@@ -61,7 +61,7 @@ describe("Register Page", () => {
     expect(logo).toBeInTheDocument();
   });
 
-//  Header has back to explore button
+  //Header has back to explore button
   it("should have header with 'back to explore' button", () => {
     const exploreButton = screen.getByRole("button", {
       name: /back to explore/i,

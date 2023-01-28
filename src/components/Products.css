@@ -3,6 +3,13 @@
   position: relative;
   left: 4rem;
 }
+.zeroProduct{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 15rem;
+}
 
 .hero {
   background-image: url("../assets/hero_image.png");
