@@ -3,6 +3,7 @@ import ipConfig from "./ipConfig.json";
 import {Switch, Route} from "react-router-dom";
 import Login from "./components/Login";
 import Products from "./components/Products";
+import Checkout from "./components/Checkout"
 
 
 
@@ -18,6 +19,7 @@ function App() {
       <Route exact path="/" component={Products} />
       <Route exact path="/register" component={Register} />
       <Route exact path="/login" component={Login} />  
+      <Route exact path="/checkout" component={Checkout}/>
      
      </Switch>
      </div>

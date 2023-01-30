@@ -9,6 +9,7 @@ import { useHistory } from "react-router-dom";
 import { Search, SentimentDissatisfied } from "@mui/icons-material";
 
 
+
 import "./Header.css";
 
 const Header = ({ children, hasHiddenAuthButtons }) => {

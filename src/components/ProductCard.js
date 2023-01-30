@@ -14,8 +14,8 @@ import "./ProductCard.css";
 import useState from "react";
 
 const ProductCard = ({ product, handleAddToCart }) => {
+ const id=product._id;
 
- 
   return (
   
    <Card className="card">
@@ -34,6 +34,7 @@ const ProductCard = ({ product, handleAddToCart }) => {
             className="card-button"
             startIcon={<AddShoppingCartOutlined />}
             variant="contained"
+            onClick={()=> handleAddToCart(id,localStorage.token,1)}
             >
             ADD TO CART
             </Button> 
