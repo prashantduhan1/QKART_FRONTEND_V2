@@ -48,6 +48,7 @@ const Products = () => {
    const[apiCall,setApiCall]=useState(false);
    const[cartItem,setCartItem]=useState([]);
    const[cartData,setCartData]=useState([]);
+   const[debounceTimeout,setDebounceTimeout]=useState(500);
 
    const { enqueueSnackbar } = useSnackbar();
 
@@ -61,8 +62,7 @@ const Products = () => {
 
   useEffect(()=>{
     fetchCart(localStorage.token)
-  //  .then((data)=>{
-    //  setCartItem(data);
+ 
     },[])
 
 
@@ -164,11 +164,26 @@ const Products = () => {
  
 
   
- const debounceSearch = (event, debounceTimeout=500) => {
+//  const debounceSearch = (event, debounceTimeout=500) => {
  
- const timeId=setTimeout(()=>{
-  performSearch(event.target.value);
- },500);
+//  const timeId=setTimeout(()=>{
+//   performSearch(event.target.value);
+//  },500);
+// };
+
+
+const debounceSearch = (event, debounceTimeout) => {
+  const value = event.target.value;
+
+  if (debounceTimeout) {
+    clearTimeout(debounceTimeout);
+  }
+
+  const timeout = setTimeout(() => {
+    performSearch(value);
+  }, 500);
+
+  setDebounceTimeout(timeout);
 };
 
 
@@ -210,8 +225,8 @@ const Products = () => {
           'Authorization': `Bearer ${token}`
         }
       })
-      
-       setCartData(generateCartItemsFrom(result,await performAPICall()))
+       console.log(result.data)
+       setCartData(generateCartItemsFrom(result.data,await performAPICall()))
        setCartItem(result.data);
  
       return result.data;
@@ -308,7 +323,7 @@ const Products = () => {
     {  const res=await axios.post(`${config.endpoint}/cart`, 
       {"productId":productId,"qty": qty }, { headers: { 'Authorization': `Bearer ${token}` }});
    
-      setCartData(generateCartItemsFrom(res,data2))
+      setCartData(generateCartItemsFrom(res.data,data2))
       console.log(cartData)
    
       
@@ -341,7 +356,7 @@ const Products = () => {
       const res=await axios.post(`${config.endpoint}/cart`, 
       {"productId":productId,"qty": itemToBeUpdated.qty+qty }, { headers: { 'Authorization': `Bearer ${token}` }});
    
-      setCartData(generateCartItemsFrom(res,data2))
+      setCartData(generateCartItemsFrom(res.data,data2))
      
    
       
@@ -354,22 +369,24 @@ const Products = () => {
 
   return (
     <div>
-        <Header  children={<TextField
-        className="search-desktop"
-        size="small"
-        md={6}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="start">
-              <Search color="primary" />
-            </InputAdornment>
-          ),
-        }}
-        placeholder="Search for items/categories"
-        name="search"
-        onChange={ (e)=> debounceSearch(e)  }
-        
-        /> } />
+      
+<Header>
+  <TextField
+    className="search-desktop"
+    size="small"
+    InputProps={{
+      className: "search",
+      endAdornment: (
+        <InputAdornment position="end">
+          <Search color="primary" />
+        </InputAdornment>
+      ),
+    }}
+    placeholder="Search for items/categories"
+    name="search"
+    onChange={(e) => debounceSearch(e, debounceTimeout)}
+  />
+</Header>
 
       <TextField
         className="search-mobile"
@@ -435,4 +452,3 @@ const Products = () => {
 };
 
 export default Products;
-

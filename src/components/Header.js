@@ -22,7 +22,7 @@ const Header = ({ children, hasHiddenAuthButtons }) => {
     return (
       <Box className="header">
         <Box className="header-title">
-            <img src="logo_dark.svg" alt="QKart-icon"></img>
+            <img src="logo_light.svg" alt="QKart-icon"></img>
         </Box>
         { (children) && 
           <div>{children}</div>

@@ -39,6 +39,8 @@ const Login = () => {
   const[username,setUsername]=useState("");
   const[password,setPassword]=useState("");
   const[apiCall,setApiCall]=useState(false);
+
+  const history = useHistory()
   const handleUsernameChange=(e)=>{
     setUsername(e.target.value)
   }
@@ -142,7 +144,7 @@ const Login = () => {
             onChange={handlePasswordChange}
            />
         { (apiCall===false)? <Button className="button" variant="contained" 
-         onClick={(e)=>{ if(validateInput({"username":username,"password":password})); setApiCall(true);  login(e); } }>LOGIN TO QKART</Button>:
+         onClick={(e)=>{ if(validateInput({"username":username,"password":password})); setApiCall(true);  login(e);   history.push("/");  } }>LOGIN TO QKART</Button>:
         <CircularProgress />
         }
           <p className="secondary-action">
